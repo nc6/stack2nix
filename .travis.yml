@@ -1,5 +1,7 @@
 sudo: false
 
+language: nix
+
 addons:
   apt:
     packages:
@@ -12,9 +14,10 @@ cache:
 
 before_install:
 # Download and unpack the stack executable
-- mkdir -p ~/.local/bin
-- export PATH=$HOME/.local/bin:$PATH
-- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+#- mkdir -p ~/.local/bin
+#- export PATH=$HOME/.local/bin:$PATH
+#- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 script:
-- stack -j2 --no-terminal --install-ghc test
+#- stack -j2 --no-terminal --install-ghc test
+- nix-shell -p cabal2nix --run 'cabal2nix cabal://mtl'
