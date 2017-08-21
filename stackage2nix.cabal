@@ -17,6 +17,7 @@ library
   exposed-modules:     Distribution.Nixpkgs.Haskell.FromStack
                      , Distribution.Nixpkgs.Haskell.FromStack.Package
                      , Distribution.Nixpkgs.Haskell.Packages.PrettyPrinting
+                     , Distribution.Nixpkgs.Haskell.Snax.Lib
                      , Distribution.Nixpkgs.Haskell.Stack
                      , Distribution.Nixpkgs.Haskell.Stack.PrettyPrinting
                      , Language.Nix.FilePath
@@ -66,6 +67,17 @@ executable stackage2nix
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , stackage2nix
+  default-language:    Haskell2010
+
+executable snax
+  hs-source-dirs:      app/snax
+  main-is:             Main.hs
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , directory
+                     , filepath
+                     , optparse-generic
+                     , stack2nix
   default-language:    Haskell2010
 
 test-suite spec
