@@ -1,23 +1,20 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 -- | Snax infrastructure.
-module Distribution.Nixpkgs.Haskell.Snax.Lib where
+module Distribution.Nixpkgs.Haskell.Snax where
 
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as LBS
-import Distribution.Nixpkgs.Haskell.Derivation
 import Distribution.Nixpkgs.Haskell.Packages.PrettyPrinting as PP
-import Distribution.Package
-import Distribution.Text
 
 import GHC.Generics (Generic)
 
 import Language.Nix.PrettyPrinting as PP
 
-import System.FilePath ((</>))
+import System.FilePath ((</>), (<.>))
 
 libPath :: FilePath
-libPath = ".snax/lib"
+libPath = ".snax"
 
 -- | Repository configuration
 data Repo = Repo
@@ -46,7 +43,7 @@ fetchRepo =
     ]
 
 writeRepo :: Repo -> IO ()
-writeRepo r = LBS.writeFile (libPath </> repo r) (Aeson.encode r)
+writeRepo r = LBS.writeFile (libPath </> repo r <.> ".json") (Aeson.encode r)
 
 allCabalHashes :: String -> Repo
 allCabalHashes revision = Repo {
@@ -74,6 +71,14 @@ libNix =
       vcat
         [ "all-cabal-hashes = callPackage \"./fetch-repo.nix\" ./all-cabal-hashes.json;"
         , "lts-haskell = callPackage \"./fetch-repo.nix\" ./lts-haskell.json;"
+        , "stack-resolver = runCommand \"extract-stack-resolver\" {} ''"
+        , nest 2 $ vcat
+          [ "snax extract-resolver > $out" ]
+        , "'';"
+        , "stackage-packages = runCommand \"generate-stackages\" { stack-resolver } ''"
+        , nest 2 $ vcat
+          [ "snax extract-resolver > $out" ]
+        , "'';"
         ]
     , "}"
     ]
