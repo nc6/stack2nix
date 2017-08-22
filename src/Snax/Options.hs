@@ -7,10 +7,12 @@
 {-# LANGUAGE TypeOperators      #-}
 {-# LANGUAGE StrictData         #-}
 
-module Options where
+module Snax.Options where
 
 import Control.Lens
 import Control.Monad (join)
+
+import qualified Data.Text as T
 import Options.Generic
 
 import Stack.Types (StackYaml(..))
@@ -40,7 +42,7 @@ data Options' w
       <?> "Path to a specific stack.yaml."
     }
   | GenerateStackage
-    { _resolver :: w ::: String
+    { _resolver :: w ::: T.Text
       <?> "Stack resolver to generate derivations for."
     , _doCheckStackage :: w ::: Bool
       <?> "Enable tests for stackage packages."

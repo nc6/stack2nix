@@ -23,6 +23,8 @@ library
                      , Language.Nix.FilePath
                      , Runner
                      , Runner.Cli
+                     , Snax
+                     , Snax.Options
                      , Stack.Config
                      , Stack.Config.TH
                      , Stack.Config.Yaml
@@ -38,6 +40,7 @@ library
                      , cabal2nix >= 2.3
                      , containers
                      , deepseq
+                     , directory
                      , distribution-nixpkgs >= 1.1
                      , exceptions > 0.8
                      , filepath
@@ -49,6 +52,7 @@ library
                      , lens
                      , network-uri
                      , optparse-applicative
+                     , optparse-generic
                      , pretty
                      , stackage-curator
                      , text
@@ -70,19 +74,12 @@ executable stackage2nix
   default-language:    Haskell2010
 
 executable snax
-  hs-source-dirs:      app/snax
+  hs-source-dirs:      snax
   main-is:             Main.hs
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
-                     , cabal2nix
-                     , containers
-                     , directory
-                     , filepath
-                     , lens
                      , optparse-generic
-                     , pretty
-                     , stack2nix
-                     , stackage-curator
+                     , stackage2nix
   default-language:    Haskell2010
 
 test-suite spec
