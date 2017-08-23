@@ -36,6 +36,8 @@ data Options' w
       <?> "Revision of all-cabal-hashes to use."
     , _ltsHaskell :: w ::: String
       <?> "Revision of lts-haskell to use."
+    , _bootstrap :: w ::: Maybe FilePath
+      <?> "Bootstrap stackage2nix using an existing .nix file."
     }
   | ExtractResolver
     { _stackYaml :: w ::: Maybe FilePath
